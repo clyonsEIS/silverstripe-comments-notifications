@@ -27,17 +27,14 @@ class CommentingControllerNotificationsExtension extends Extension {
 		$email->setTemplate(Config::inst()->get('CommentsNotifications', 'email_template'));
 		$email->populateTemplate($comment);
 		
-		// Corretly set sender and from as per email convention
+		// Correctly set sender and from as per email convention
 		$sender = Config::inst()->get('CommentsNotifications', 'email_sender');
 		if(!empty($comment->Email)) {
 			$email->setFrom($comment->Email);
-			$email->addCustomHeader ('Reply-To', $comment->Email);
 		} else {
 			$email->setFrom($sender);
 		}
-		$email->addCustomHeader('X-Sender', $sender);
-		$email->addCustomHeader('Sender', $sender);
-		
+
 		$this->owner->extend('updateEmail', $email);
 		
 		// Send
